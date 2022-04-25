@@ -21,13 +21,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter 
 @NoArgsConstructor
 @Entity
 @Table(name = "REGISTRY")
 public class Registry implements Serializable{
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +39,7 @@ public class Registry implements Serializable{
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT-3")
-	@Column(name = "pointRegistry")
+	@Column(name = "point_registry") 
 	private Date pointRegistry;
 	
 	private String justification;
@@ -50,18 +53,5 @@ public class Registry implements Serializable{
 		super();
 		this.justification = justification;
 		this.user = user;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public void setJustificativa(String justification) {
-		this.justification = justification;
-	}
-
-	public void setUsuario(User user) {
-		this.user = user;
-	}
-			
+	}		
 }

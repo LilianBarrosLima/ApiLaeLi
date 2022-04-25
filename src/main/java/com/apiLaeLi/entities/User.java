@@ -18,8 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,12 +29,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
-public class User implements UserDetails, Serializable {
+//public class User implements UserDetails, Serializable {
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //private UUID id; //gerador universal
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private int id;
 	
 	@NotNull
@@ -56,14 +56,12 @@ public class User implements UserDetails, Serializable {
 	@Cascade(CascadeType.ALL)
 	private List<Registry> registry;
 
-	public User(@NotNull String name, @NotNull String email, @NotNull String password, Manager manager/*,
-			List<Registry> registry*/) {
+	public User(@NotNull String name, @NotNull String email, @NotNull String password, Manager manager) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.manager = manager;
-		//this.registry = registry;
 	}
 	
 	@Override
@@ -82,7 +80,7 @@ public class User implements UserDetails, Serializable {
 		User other = (User) obj;
 		return id == other.id;
 	}
-
+/*
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
@@ -93,7 +91,8 @@ public class User implements UserDetails, Serializable {
 		return this.password;
 	}
 		
-	public String getUseremail() {
+	@Override
+	public String getUsername() {
 		return this.email;
 	}
 
@@ -115,11 +114,6 @@ public class User implements UserDetails, Serializable {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.name;
-	}
-
+	}	
+*/
 }

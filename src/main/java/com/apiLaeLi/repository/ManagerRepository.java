@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.apiLaeLi.entities.Manager;
 
 @Repository
-public interface ManagerRepository extends JpaRepository<Manager, Integer> {
-	
+public interface ManagerRepository extends JpaRepository<Manager, Integer> {	
 	
 }
