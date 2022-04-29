@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-import com.apiLaeLi.entities.User;
+import com.apiLaeLi.entities.Employee;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +18,5 @@ public class RegistryDto {
 	private String justification;	
 	
 	@NotNull 
-	private User user;
+	private Employee employee;
 }

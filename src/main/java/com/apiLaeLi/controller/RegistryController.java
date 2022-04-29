@@ -36,54 +36,54 @@ public class RegistryController {
 	
 	this.registryService = registryService;		
 }				
-	
-//---------Historico------Ver todos registros por id do usuario por dia --------------------
+//__________________________________Historic Screen________________________________________	
+//------------------------------Registry by day-------------------------------------------
 	//http://localhost:8080/api/registros/usuario/dia/1
-	@GetMapping(value = "/usuario/dia/{user_id}")
-	public ResponseEntity<Collection<Registry>> findRegistriesByDay(@PathVariable(value = "user_id")Integer user_id) {
-		Collection <Registry> registriesByDay = registryService.findByUserIdByDay(user_id);
+	@GetMapping(value = "/usuario/dia/{employee_id}")
+	public ResponseEntity<Collection<Registry>> findRegistriesByDay(@PathVariable(value = "employee_id")Integer employee_id) {
+		Collection <Registry> registriesByDay = registryService.findByEmployeeIdByDay(employee_id);
 		return ResponseEntity.ok().body(registriesByDay);		
 	}			
-//---------Historico------Ver todos registros por id do usuario por mes----------------------	
+//------------------------------Registry by month------------------------------------------	
 	//http://localhost:8080/api/registros/usuario/mes/1
-	@GetMapping(value = "/usuario/mes/{user_id}")
-	public ResponseEntity<Collection<Registry>> findByUserIdByMonth(@PathVariable(value = "user_id")Integer user_id) {
-		Collection <Registry> registriesByMonth = registryService.findByUserIdByMonth(user_id);
+	@GetMapping(value = "/usuario/mes/{employee_id}")
+	public ResponseEntity<Collection<Registry>> findByEmployeeIdByMonth(@PathVariable(value = "employee_id")Integer employee_id) {
+		Collection <Registry> registriesByMonth = registryService.findByEmployeeIdByMonth(employee_id);
 		return ResponseEntity.ok().body(registriesByMonth);
 	}	
-//---------Historico------------------Mostra as horas trabalhadas---HH:mm-----------------	
+//-------------------------------Worked hours---HH:mm--------------------------------------	
 	//http://localhost:8080/api/registros/horas/1
-	@GetMapping(value = "/horas/{user_id}")
-	public ResponseEntity<String> showHours(@PathVariable(value = "user_id")Integer user_id) {
-		Collection <Registry> registriesByDay = registryService.findByUserIdByDay(user_id);
+	@GetMapping(value = "/horas/{employee_id}")
+	public ResponseEntity<String> showHours(@PathVariable(value = "employee_id")Integer employee_id) {
+		Collection <Registry> registriesByDay = registryService.findByEmployeeIdByDay(employee_id);
 		long registryDay = registriesByDay.size();	
 		Registry[] registries = registriesByDay.toArray(new Registry[0]);		
 		long total_minutes = 0;	 
 	    Date start_point = null, end_point = null;	
 	    
 	    for(int i = 0; i < registryDay; i++) {	
-	    	if (registryDay % 2 == 0) { //se tiver entrada e saida 
-		        if(i % 2 == 0) {//quer dizer q é o primeiro do par, a entrada		        
+	    	if (registryDay % 2 == 0) { //case have input and output 
+		        if(i % 2 == 0) {//the first, input, the even		        
 		        	start_point = registries[i].getPointRegistry();
-		        }else{//saida
+		        }else{//output
 		        	end_point = registries[i].getPointRegistry();
 		        	long diff = end_point.getTime() - start_point.getTime();
 		            total_minutes += TimeUnit.MILLISECONDS.toMillis(diff);			            	
 		        }		      
-		    }else{ //Impar - se tiver somente entrada  
-		    	if (registryDay > 2) {//3 ou +
+		    }else{ //Odd - doesn't have output  
+		    	if (registryDay > 2) {//3 or + registries
 	    			do {	    			
-	    				if(i % 2 == 0) {//quer dizer q é o primeiro do par, a entrada		        
+	    				if(i % 2 == 0) {//it means that is the first, input, the even		        
 	    		        	start_point = registries[i].getPointRegistry();
-	    		        }else{//saida
+	    		        }else{//output
 	    		        	end_point = registries[i].getPointRegistry();
 	    		        	long diff = end_point.getTime() - start_point.getTime();
 	    		            total_minutes += TimeUnit.MILLISECONDS.toMillis(diff);
 	    		        } 			    				
 	    			}while(registryDay <= (registryDay-1));   	
-		    	}else if (registryDay == 0){//se não tiver entrada
+		    	}else if (registryDay == 0){//if doesn't have anyone registries
 		    		total_minutes = 0;
-	    		}else {//se tiver somente uma entrada
+	    		}else {//just 1 registry
 	    			start_point = registries[i].getPointRegistry();	 
 	    			Calendar cal = Calendar.getInstance();
 	    			Date now = cal.getTime();
@@ -103,37 +103,37 @@ public class RegistryController {
 		return ResponseEntity.ok().body(showH);
 	} 
 	
-//---------Historico------Calcula qtd de minutos por dia-----Long--------------	
+//---------------------------------Minutes by day-----Long--------------------------------	
 	//http://localhost:8080/api/registros/minutos/1
-	@GetMapping(value = "/minutos/{user_id}")
-	public ResponseEntity<Long> findDaylyHours(@PathVariable(value = "user_id")Integer user_id) {
-		Collection <Registry> registriesByDay = registryService.findByUserIdByDay(user_id);
+	@GetMapping(value = "/minutos/{employee_id}")
+	public ResponseEntity<Long> findDaylyHours(@PathVariable(value = "employee_id")Integer employee_id) {
+		Collection <Registry> registriesByDay = registryService.findByEmployeeIdByDay(employee_id);
 		long registryDay = registriesByDay.size();	
 		Registry[] registries = registriesByDay.toArray(new Registry[0]);		
 		long total_minutes = 0;	 
 	    Date start_point = null, end_point = null;	
 	    
 	    for(int i = 0; i < registryDay; i++) {	
-	    	if (registryDay % 2 == 0) { //se tiver entrada e saida //caminho feliz 
-		        if(i % 2 == 0) {//quer dizer q é o primeiro do par, a entrada		        
+	    	if (registryDay % 2 == 0) { //case have input and output  
+		        if(i % 2 == 0) {//the first, input, the even		        
 		        	start_point = registries[i].getPointRegistry();
-		        }else{//saida
+		        }else{//output
 		        	end_point = registries[i].getPointRegistry();
 		        	long diff = end_point.getTime() - start_point.getTime();
 		        	total_minutes += TimeUnit.MILLISECONDS.toMinutes(diff);		        	
 		        }		      
-		    }else{ //Impar - se tiver entrada  e nao saida 
-	    		if (registryDay > 2) {//3 ou +
+		    }else{ //Odd - doesn't have output   
+	    		if (registryDay > 2) {//3 or +
 	    			do {	    			
-	    				if(i % 2 == 0) {//quer dizer q é o primeiro do par, a entrada		        
+	    				if(i % 2 == 0) {//the first, input, the even		        
 	    		        	start_point = registries[i].getPointRegistry();
-	    		        }else{//saida
+	    		        }else{//output
 	    		        	end_point = registries[i].getPointRegistry();
 	    		        	long diff = end_point.getTime() - start_point.getTime();
 	    		            total_minutes += TimeUnit.MILLISECONDS.toMinutes(diff);
 	    		        } 			    				
 	    			}while(registryDay <= (registryDay-1));	 	    		
-	    		}else {//0 ou 1 pontos - se tiver somente uma entrada
+	    		}else {//0 or 1 registry
 	    			System.out.println("You must justify!");
 		    		start_point = registries[i].getPointRegistry();	 
 		    		Calendar cal = Calendar.getInstance();
@@ -145,15 +145,16 @@ public class RegistryController {
         }    	
 		return ResponseEntity.ok().body(total_minutes);	 		
 	}
-//---------------------------------------Tela Home-------------------------------------	
-		//Mostra o botao resgistrar ponto e os registros do dia.
+//____________________________________Home Screen__________________________________________		
+		//btn registry point and daily registries.
 		//http://localhost:8080/api/registros/usuario/dia/1
 		//http://localhost:8080/api/registros/incluir
-//------------------------------------Mensagens-------------------------------------------------
+//_________________________________________________________________________________________
+//------------------------------------Message-------------------------------------------GET
 	//http://localhost:8080/api/registros/mensagem/1		
-	@GetMapping(value = "/mensagem/{user_id}")
-	public ResponseEntity <String> registriesMessage(@PathVariable(value = "user_id")Integer user_id) {
-		Collection <Registry> registriesByDay = registryService.findByUserIdByDay(user_id);
+	@GetMapping(value = "/mensagem/{employee_id}")
+	public ResponseEntity <String> registriesMessage(@PathVariable(value = "employee_id")Integer employee_id) {
+		Collection <Registry> registriesByDay = registryService.findByEmployeeIdByDay(employee_id);
 		long registryDay = registriesByDay.size();
 		if (registriesByDay.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Empty! There isn't registries today!"); 
@@ -163,19 +164,19 @@ public class RegistryController {
 			return ResponseEntity.ok("Ok");
 		}
 	}		
-//--------------------------Ver todos registros por id do usuario------------------------findByuser_id----
+//--------------------------Find registry by employee id----------------------GET employee_id
 	//http://localhost:8080/api/registros/usuario/1
-	@GetMapping(value = "/usuario/{user_id}") 
-	public List<Registry> findRegistryByuser_id (@PathVariable(value = "user_id")Integer user_id){
-		return registryService.findByuser_id(user_id);
+	@GetMapping(value = "/usuario/{employee_id}") 
+	public List<Registry> findRegistryByemployee_id (@PathVariable(value = "employee_id")Integer employee_id){
+		return registryService.findByemployee_id(employee_id);
 	}	
-//----------------------------------Ver todos registros-----------------------------------------GET		
+//----------------------------------All registry-----------------------------------------GET		
 	//http://localhost:8080/api/registros/
 	@GetMapping("/")
 	public ResponseEntity <List<Registry>> findAll(){
 		return ResponseEntity.status(HttpStatus.OK).body(registryService.findAll());
 	}
-//----------------------------------Ver registros por id--------------------------------------------GET id	
+//----------------------------------Find registry by id--------------------------------GET id	
 	//http://localhost:8080/api/registros/1
 	@GetMapping(value = "/{id}")
 	public ResponseEntity <Object> findRegistryById(@PathVariable(value = "id") Integer id){
@@ -185,7 +186,7 @@ public class RegistryController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(registryOptional.get());
 	}
-//----------------------------------Deletar registros-----------------------------------------DELETE		
+//----------------------------------Delete registry-----------------------------------DELETE		
 	//http://localhost:8080/api/registros/apagar/1
 	@DeleteMapping(value = "/apagar/{id}")
 	public ResponseEntity <Object> deleteRegistry(@PathVariable(value = "id") Integer id){
@@ -196,7 +197,7 @@ public class RegistryController {
 		registryService.deleteRegistry(registryOptional.get());
 		return ResponseEntity.status(HttpStatus.OK).body("Registry deleted!");
 	}
-//----------------------------------Editar registros-----------------------------------------PUT		
+//----------------------------------Edit registry-----------------------------------------PUT		
 	//http://localhost:8080/api/registros/editar/1
 	@PutMapping(value = "/editar/{id}")
 	public ResponseEntity <Object> updateRegistry(@PathVariable(value = "id") Integer id,
@@ -211,12 +212,14 @@ public class RegistryController {
 		registry.setId(registryOptional.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body(registryService.saveRegistry(registry));
 	}	
-//----------------------------------Incluir registros/ponto-----------------------------------------POST	
+//----------------------------------Add registry-----------------------------------------POST	
 	//http://localhost:8080/api/registros/incluir
 	@PostMapping(value = "/incluir")
 	public ResponseEntity <Object> saveRegistry(@RequestBody @Valid RegistryDto registryDto){		
 		var registry = new Registry();
-		BeanUtils.copyProperties(registryDto, registry); //converte registryDto para registry para salvar
+		BeanUtils.copyProperties(registryDto, registry); 
 		return ResponseEntity.status(HttpStatus.CREATED).body(registryService.saveRegistry(registry));		
-	}		
+	}	
+	
+	
 }

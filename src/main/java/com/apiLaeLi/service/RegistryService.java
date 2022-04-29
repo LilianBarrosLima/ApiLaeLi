@@ -38,24 +38,20 @@ public class RegistryService {
 	public void deleteRegistry(Registry registry) {
 		registryRepository.delete(registry);		
 	}
-
-	public Object findAllPorUser() {
-		return registryRepository.findAll();
+	
+	public List <Registry> findByemployee_id(Integer employee_id) {
+		return registryRepository.findByemployee_id(employee_id);
 	}
 	
-	public List <Registry> findByuser_id(Integer user_id) {
-		return registryRepository.findByuser_id(user_id);
-	}
-	
-	public Collection <Registry> findByUserIdByDay(Integer user_id) {
-		return registryRepository.findByUserIdByDay(user_id);
+	public Collection <Registry> findByEmployeeIdByDay(Integer employee_id) {
+		return registryRepository.findByEmployeeIdByDay(employee_id);
 	}
 
-	public Collection<Registry> findByUserIdByMonth(Integer user_id) {
-		return registryRepository.findByUserIdByMonth(user_id);
+	public Collection<Registry> findByEmployeeIdByMonth(Integer employee_id) {
+		return registryRepository.findByEmployeeIdByMonth(employee_id);
 	}
-	
-	public long findRegistriesByDay(Integer user_id) {
-		return registryRepository.findRegistriesByDay(user_id);
+	//number of points
+	public long findRegistriesByDay(Integer employee_id) { 
+		return registryRepository.findRegistriesByDay(employee_id);
 	}
 }

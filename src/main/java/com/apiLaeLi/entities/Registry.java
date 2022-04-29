@@ -46,12 +46,12 @@ public class Registry implements Serializable{
 	
 	@ManyToOne 
 	@JsonIgnore
-	@JoinColumn(name = "user_id") 
-	private User user;
+	@JoinColumn(name = "employee_id") 
+	private Employee employee;
 
-	public Registry(String justification, User user) {
+	public Registry(String justification, Employee employee) {
 		super();
 		this.justification = justification;
-		this.user = user;
+		this.employee = employee;
 	}		
 }

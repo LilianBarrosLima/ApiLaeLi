@@ -38,7 +38,7 @@ public class Manager implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "manager")
 	@Cascade(CascadeType.ALL)
-	private List<User> users;
+	private List<Employee> employees;
 
 	public Manager(String manager_name) {
 		super();		

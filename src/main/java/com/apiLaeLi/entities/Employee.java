@@ -18,7 +18,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-//import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +31,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "USER")
-//public class User implements UserDetails, Serializable {
-public class User implements Serializable {
+@Table(name = "EMPLOYEE")
+public class Employee implements UserDetails, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -42,24 +44,27 @@ public class User implements Serializable {
 	private String name;
 	
 	@NotNull
-	private String email;
+	private String username;
+	   
 	
 	@NotNull
+	@JsonIgnore 
 	private String password;
 	
 	@ManyToOne 
 	@JoinColumn(name = "manager_id") 	
 	private Manager manager;
 	
-	//@JsonIgnore
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "employee")
 	@Cascade(CascadeType.ALL)
 	private List<Registry> registry;
 
-	public User(@NotNull String name, @NotNull String email, @NotNull String password, Manager manager) {
+	
+	public Employee(@NotNull String name, @NotNull String username, @NotNull String password,
+			Manager manager) {
 		super();
 		this.name = name;
-		this.email = email;
+		this.username = username;
 		this.password = password;
 		this.manager = manager;
 	}
@@ -77,23 +82,13 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Employee other = (Employee) obj;
 		return id == other.id;
-	}
-/*
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
 	}
 
 	@Override
-	public String getPassword() {
-		return this.password;
-	}
-		
-	@Override
-	public String getUsername() {
-		return this.email;
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
 	}
 
 	@Override
@@ -114,6 +109,5 @@ public class User implements Serializable {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}	
-*/
+	}
 }
