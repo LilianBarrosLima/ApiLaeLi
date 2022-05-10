@@ -104,7 +104,7 @@ public class RegistryController {
 	} 
 	
 //---------------------------------Minutes by day-----Long--------------------------------	
-	//http://localhost:8080/api/registros/minutos/1
+	//http://localhost:8080/api/home/1
 	@GetMapping(value = "/minutos/{employee_id}")
 	public ResponseEntity<Long> findDaylyHours(@PathVariable(value = "employee_id")Integer employee_id) {
 		Collection <Registry> registriesByDay = registryService.findByEmployeeIdByDay(employee_id);
@@ -146,7 +146,8 @@ public class RegistryController {
 		return ResponseEntity.ok().body(total_minutes);	 		
 	}
 //____________________________________Home Screen__________________________________________		
-		//btn registry point and daily registries.
+	//http://localhost:8080/api/home/1
+	//btn registry point and daily registries.
 		//http://localhost:8080/api/registros/usuario/dia/1
 		//http://localhost:8080/api/registros/incluir
 //_________________________________________________________________________________________

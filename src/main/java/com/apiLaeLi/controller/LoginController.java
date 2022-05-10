@@ -35,6 +35,12 @@ public class LoginController {
     public String users() {
         return "Screen Login"; 
     }
+    /*
+    @PostMapping("api/login")//http://localhost:8080/api/login
+    public ResponseEntity <Object> loginEmployee(@RequestBody @Valid EmployeeDto employeeDto){
+    	
+    	return (ResponseEntity<Object>) ResponseEntity.status(HttpStatus.OK);
+    }    */
     
  //--------------------------------Screen Registration user----------------------------------POST	
   	@PostMapping("/api/cadastro")	//http://localhost:8080/api/cadastro
